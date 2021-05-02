@@ -15,69 +15,85 @@ const InternQuestions = require('./lib/InternQuetions');
 //importing layout template file
 const generatePage = require('./src/page-template');
 //Array to hold team members
-let teamProfileArr = []; 
-//adding the intern profile to the team profile array
-function addIntern () {
-    inquirer.prompt(InternQuestions)
-    .then(function(data) {
-        const internName = data.internName;
-        const internId = data.internId;
-        const internEmail = data.internEmail;
-        const internSchool = data.internSchool;
+const teamProfileArr = {
+    manager: [],
+    engineer: [],
+    intern: [],
+}
+const InternQuestions = () => {
+    console.log(`
+	=================
+	Add a New Intern
+	=================`);
+    return inquirer.prompt(InternQuestions)
+    .then((internData) => {
+        const {
+            internName, 
+            internId, 
+            internEmail, 
+            internSchool,
+        } = internData;
         const intern = new Intern(internName, internId, internEmail, internSchool);
 
-        teamProfileArr.push(intern);
-        //populate the choices again 
-        addOptions ();
-    });
+        teamProfileArr.interns.push(intern);
+    })
+    .then(EmployeeQuestions);
 };
+
 //add engineer profiles to the team profile array
-function addEngineer () {
-    inquirer.prompt(EngineerQuestions)
-    .then(function(data) {
-        const engineerName = data.engineerName;
-        const engineerId = data.engineerId;
-        const engineerEmail = data.engineerEmail;
-        const engineerGithub = data.engineerGithub;
-        const engineer = new Engineer (engineerName, engineerId, engineerEmail, engineerGithub);
+const EngineerQuestions = () => {
+    console.log(`
+	==================
+	Add a New Engineer
+	==================`);
+    return inquirer.prompt(EngineerQuestions)
+    .then((engineerData) => {
+        const {
+            engineerName,
+            engineerId,
+            engineerEmail,
+            engineerGithub,
+        } = engineerData;
+        const engineer = new Engineer (
+            engineerName, 
+            engineerId,
+            engineerEmail,
+            engineerGithub,
+        );
 
-        teamProfileArr.push(engineer);
-        addOptions ();
-    });
-};
-//populate the choices again to see, and call the appropriate function based on user's choice 
-function addOptions () {
-    inquirer.prompt (EmployeeQuestions)
-    .then(function(data) {
-        switch (data.Choices) {
-            case "Add an Engineer":
-                addEngineer ();
-            break;
-            case "Add an Intern":
-                addIntern ();
-            break;
-            case "None":
-                generateHtmlFile ();
-            break;
-        };
-
-    });
+        teamProfileArr.engineers.push(engineer);
+    })
+    .then(EmployeeQuestions);
 };
 
-//Add the manager profile to team Profile Array 
-function addManager () {
-    inquirer.prompt(ManagerQuestions)
-    .then(function(data) {
-        const managerName = data.managerName;
-        const managerId = data.managerId;
-        const managerEmail = data.managerEmail;
-        const managerOfficeNum = data. managerOfficeNum;
-        const manager = new Manager (managerName, managerId, managerEmail, managerOfficeNum);
+const ManagerQuestions = () => {
+    console.log(`
+	=============
+	Add a Manager
+	=============`);
+    return inquirer.prompt(ManagerQuestions)
+    .then((managerData) => {
+        const {
+            managerName, 
+            managerId,
+            managerEmail,
+            managerOfficeNum,
+        } = managerData;
+        const manager = new Manager (
+            managerName, 
+            managerId,
+            managerEmail,
+            managerOfficeNum,
 
-        teamProfileArr.push(manager);
-        addOptions ();
+        );
+        teamProfileArr.managers.push(manager);
     });
 };
+
+ 
+
+
+       
 function init () {
     inquirer.prompt ([
         {
