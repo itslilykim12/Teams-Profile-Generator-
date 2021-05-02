@@ -1,5 +1,4 @@
 //Application Dependencies
-const fs = require('fs');
 const inquirer = require('inquirer');
 //importing constructor functions
 const Employee = require('./lib/Employee');
@@ -13,34 +12,12 @@ const ManagerQuestions = require('./lib/ManagerQuestions');
 const InternQuestions = require('./lib/InternQuetions');
 const pageHtml = require('./lib/html-template');
 
+const { writeFile, copyFile } = require('./util/generate-site');
+
 //importing layout template file
 const generatePage = require('./src/page-template');
 //Array to hold team members
 let teamProfileArr = [];
-//Function that writes the html file 
-const writeToFile = (pageHtmlArr) => {
-    return new Promise ((resolve, reject) => {
-
-    fs.writeFile ("./dist/index.html", pageHtmlArr.join(""), function(err) {
-        //if there is an error, reject the Promise and send the error to the Promise's `.catch ()` method
-        if (err) {
-            reject (err);
-            return;
-        }
-        //if everything went well, resolve the Promise and send the successful data to the `.then ()` method
-        resolve ({
-            ok: true,
-            message: "File Created!",
-        });
-    });
-});
-};
-// Generate HTML file.
-function generateHtmlFile() {
-    const pageHtmlArr = pageHtml.generateHtml(teamProfileArr);
-    writeToFile( pageHtmlArr );
- };
-
 //Add intern profile 
 function addIntern () {
     inquirer.prompt (InternQuestions)
