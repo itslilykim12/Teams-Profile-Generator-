@@ -1,7 +1,7 @@
 //Application Dependencies
+const fs = require('fs');
 const inquirer = require('inquirer');
 //importing constructor functions
-const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
@@ -9,17 +9,20 @@ const Manager = require('./lib/Manager');
 const EngineerQuestions = require('./lib/EngineerQuestions');
 const ManagerQuestions = require('./lib/ManagerQuestions');
 const InternQuestions = require('./lib/InternQuetions');
+const holdHtml = require('./util/generate-site');
 
-const { writeFile, copyFile } = require('./util/generate-site');
-
-//importing layout template file
-const generatePage = require('./src/page-template');
 //Array to hold team members
 const teamProfile = {
     manager: [],
     engineer: [],
     intern: [],
 };
+//function that write the output HTML file 
+const writeToFile = (holdHtmlArr) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('.')
+    })
+}
 
 
 //Add an additional Employee questions: 
